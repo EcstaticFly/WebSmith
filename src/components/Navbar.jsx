@@ -1,5 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { availableIcons, availableThemes } from "../configs/index";
+import { ChevronDownIcon } from "lucide-react";
 
 const Navbar = ({
   selectedTheme,
@@ -8,6 +9,7 @@ const Navbar = ({
   setCanvasElements,
   setSelectedElement,
 }) => {
+  const [isOpen, setIsOpen] = useState(false);
   useEffect(() => {
     const savedTheme = localStorage.getItem("selectedTheme");
     if (savedTheme) {
@@ -15,12 +17,16 @@ const Navbar = ({
     }
   }, []);
 
-  // Save theme to localStorage whenever it changes
   useEffect(() => {
     if (selectedTheme) {
       localStorage.setItem("selectedTheme", selectedTheme);
     }
   }, [selectedTheme]);
+
+  const handleThemeChange = (value) => {
+    setSelectedTheme(value);
+    setIsOpen(false);
+  };
 
   const exportWebsite = async () => {
     // Helper function to convert image file to Base64
@@ -66,8 +72,6 @@ const Navbar = ({
     <body>`;
 
     const foot = `</body></html>`;
-
-    // Convert canvas elements to HTML
     let content = "";
 
     canvasElements.forEach((element) => {
@@ -152,29 +156,57 @@ const Navbar = ({
   };
 
   return (
-    <div className="bg-white border-b border-gray-200 px-4 py-2 flex justify-between items-center">
-      <h1 className="text-xl font-semibold text-gray-800">WebSmith</h1>
-      <div className="space-x-2">
-        <select
-          value={selectedTheme}
-          onChange={(e) => setSelectedTheme(e.target.value)}
-          className="p-2 border rounded-md"
-        >
-          {availableThemes.map((theme) => (
-            <option key={theme.value} value={theme.value}>
-              {theme.label}
-            </option>
-          ))}
-        </select>
+    <div className="bg-white border-b border-gray-200 px-4 py-2 flex flex-col sm:flex-row sm:justify-between sm:items-center space-y-3 sm:space-y-0">
+      <div className="flex gap-2">
+        <img
+          src="/WebSmith.webp"
+          alt="WebSmith logo"
+          className="size-7 rounded-sm"
+        />
+        <h1 className="text-xl font-semibold text-gray-800">WebSmith</h1>
+      </div>
+      <div className="flex flex-col sm:flex-row items-center sm:space-x-4 space-y-4 sm:space-y-0">
+        <div className="relative w-full sm:w-auto">
+          <div
+            className="p-2 border border-gray-300 rounded-lg shadow-sm bg-white flex justify-between items-center cursor-pointer focus:ring-2 focus:ring-blue-500 transition"
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            <span>
+              {availableThemes.find((theme) => theme.value === selectedTheme)
+                ?.label || "Select Theme"}
+            </span>
+            <ChevronDownIcon
+              className={`w-5 h-5 transition-transform ${
+                isOpen ? "rotate-180" : ""
+              }`}
+            />
+          </div>
+
+          {isOpen && (
+            <div className="absolute mt-1 text-center w-full bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+              {availableThemes.map((theme) => (
+                <div
+                  key={theme.value}
+                  onClick={() => handleThemeChange(theme.value)}
+                  className="px-4 py-2 text-gray-700 hover:bg-blue-100 cursor-pointer transition"
+                >
+                  {theme.label}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
         <button
           onClick={exportWebsite}
-          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+          className="px-5 py-2.5 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full sm:w-auto"
         >
           Export HTML
         </button>
+
         <button
           onClick={clearCanvas}
-          className="px-4 py-2 bg-red-100 text-red-700 rounded-md hover:bg-red-200 transition"
+          className="px-5 py-2.5 bg-red-100 text-red-700 rounded-lg shadow-md hover:bg-red-200 transition transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 w-full sm:w-auto"
         >
           Clear Canvas
         </button>

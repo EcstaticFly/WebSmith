@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar";
 import ElementsPanel from "../components/ElementsPanel";
 import Canvas from "../components/Canvas";
 import PropertiesPanel from "../components/PropertiesPanel";
+import { getDefaultProperties } from "../configs";
 
 const Home = () => {
   const [canvasElements, setCanvasElements] = useState([]);
@@ -47,7 +48,7 @@ const Home = () => {
     // Set the data transfer for compatibility
     e.dataTransfer.setData("text/plain", element.id || element.elementId || "");
 
-    // Get the size of the element being dragged for centered positioning
+    // for centered positioning
     const rect = e.currentTarget.getBoundingClientRect();
     elementSize.current = {
       width: rect.width,
@@ -132,57 +133,6 @@ const Home = () => {
     }
   };
 
-  const getDefaultProperties = (type) => {
-    switch (type) {
-      case "text":
-        return {
-          content: "Edit this text",
-          fontSize: 16,
-          color: "#000000",
-          fontWeight: "normal",
-          fontFamily: "Arial, sans-serif",
-          zIndex: 0,
-        };
-      case "image":
-        return {
-          src: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMzAwIDIwMCI+PHJlY3Qgd2lkdGg9IjMwMCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiNlZWUiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiIGZpbGw9IiM5OTkiPkltYWdlIFBsYWNlaG9sZGVyPC90ZXh0Pjwvc3ZnPg==",
-          alt: "Image description",
-          width: 300,
-          height: 200,
-          customSrc: "",
-          rotation: 0,
-          zIndex: 0,
-        };
-      case "button":
-        return {
-          text: "Click Me",
-          backgroundColor: "#3B82F6",
-          textColor: "#FFFFFF",
-          size: "medium",
-          borderRadius: 4,
-          fontFamily: "Arial, sans-serif",
-          zIndex: 0,
-        };
-
-      case "divider":
-        return {
-          width: 100,
-          color: "#000000",
-          thickness: 2,
-          zIndex: 0,
-        };
-      case "icon":
-        return {
-          icon: "star",
-          size: 32,
-          rotation: 0,
-          zIndex: 0,
-        };
-      default:
-        return {};
-    }
-  };
-
   const handleDragOver = (e) => {
     e.preventDefault();
     e.dataTransfer.dropEffect = "move";
@@ -197,7 +147,7 @@ const Home = () => {
         setCanvasElements={setCanvasElements}
         setSelectedElement={setSelectedElement}
       />
-      <div className="lg:flex ">
+      <div className="flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-4 p-4">
         <Canvas
           handleDrop={handleDrop}
           handleDragOver={handleDragOver}
@@ -207,14 +157,12 @@ const Home = () => {
           setSelectedElement={setSelectedElement}
           handleDragStart={handleDragStart}
         />
-        {/* <div className="md:flex md:space-y-2"> */}
         <ElementsPanel handleDragStart={handleDragStart} />
         <PropertiesPanel
           selectedElement={selectedElement}
           setCanvasElements={setCanvasElements}
           setSelectedElement={setSelectedElement}
         />
-        {/* </div> */}
       </div>
     </div>
   );
