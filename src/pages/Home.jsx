@@ -139,7 +139,7 @@ const Home = () => {
   };
 
   return (
-    <div className="h-screen flex flex-col bg-gray-50">
+    <div className="h-screen w-screen flex flex-col bg-gray-50">
       <Navbar
         selectedTheme={selectedTheme}
         setSelectedTheme={setSelectedTheme}
@@ -157,12 +157,15 @@ const Home = () => {
           setSelectedElement={setSelectedElement}
           handleDragStart={handleDragStart}
         />
-        <ElementsPanel handleDragStart={handleDragStart} />
-        <PropertiesPanel
-          selectedElement={selectedElement}
-          setCanvasElements={setCanvasElements}
-          setSelectedElement={setSelectedElement}
-        />
+        <div className="flex flex-col gap-2">
+          <ElementsPanel handleDragStart={handleDragStart} />
+          <div className="bg-gray-300 h-0.5 mb-3 mt-2"></div>
+          <PropertiesPanel
+            selectedElement={selectedElement}
+            setCanvasElements={setCanvasElements}
+            setSelectedElement={setSelectedElement}
+          />
+        </div>
       </div>
     </div>
   );

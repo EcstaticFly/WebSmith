@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { availableIcons } from "../configs";
 
 const Canvas = ({
@@ -10,6 +10,15 @@ const Canvas = ({
   selectedElement,
   setSelectedElement,
 }) => {
+
+  const canvasStyle = useMemo(() => ({
+    width: "100vw",
+    height: "100vh",
+    backgroundImage: `url(${selectedTheme})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+  }), [selectedTheme]); 
+  
   const handleCanvasClick = (e) => {
     // Check if we're clicking directly on the canvas or on its immediate child div
     // which serves as the canvas container
@@ -49,7 +58,6 @@ const Canvas = ({
       pointerEvents: "all",
     };
 
-    // Common props for all elements
     const commonProps = {
       draggable: true,
       onDragStart: (e) => handleDragStart(e, element),
@@ -82,7 +90,6 @@ const Canvas = ({
               src={element.properties.customSrc || element.properties.src}
               alt={element.properties.alt}
               width={element.properties.width}
-              height={element.properties.height}
               style={{ transform: `rotate(${element.properties.rotation}deg)` }}
               className="object-cover"
             />
@@ -105,7 +112,7 @@ const Canvas = ({
                     : "12px 24px",
                 fontFamily: element.properties.fontFamily,
                 border: "none",
-                cursor: "pointer",
+                cursor: "inherit"
               }}
               onMouseDown={(e) => e.stopPropagation()} // Stop propagation to make entire button clickable
               onClick={(e) => {
@@ -159,17 +166,13 @@ const Canvas = ({
   };
   return (
     <div
-      className="relative flex-1 bg-gray-100 overflow-hidden"
+      className="relative flex-1 bg-gray-100 overflow-hidden sm:overflow-auto"
       onDrop={handleDrop}
       onDragOver={handleDragOver}
       onClick={handleCanvasClick}
-      style={{
-        backgroundImage: `url(${selectedTheme})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
+      style={canvasStyle}
     >
-      <div className="relative w-full h-full min-h-screen">
+      <div className="relative w-[1200px] h-[800px] min-h-screen mx-auto">
         {canvasElements.map((element) => renderCanvasElement(element))}
       </div>
     </div>

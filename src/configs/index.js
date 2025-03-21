@@ -87,7 +87,7 @@ export const availableIcons = [
   { id: "arrow-left", label: "Arrow Left", symbol: "←" },
   { id: "arrow-up", label: "Arrow Up", symbol: "↑" },
   { id: "arrow-down", label: "Arrow Down", symbol: "↓" },
-  { id: "search", label: "Search", symbol: "🔍" }, // Added search icon
+  { id: "search", label: "Search", symbol: "🔍" },
   { id: "circle", label: "Circle", symbol: "⚪" },
   { id: "square", label: "Square", symbol: "■" },
   { id: "triangle", label: "Triangle", symbol: "▲" },
