@@ -43,5 +43,5 @@ For any inquiries or collaboration, you can reach me at: [Suyash Pandey](mailto:
 - Description: Contains the full codebase for the WebSmith project, including both frontend and backend implementations.
 
 ## Video Link
-- [Video Demo](https://drive.google.com/file/d/1RxcSTJCQ-qmah5hTPk-exqgmMFyUNx2K/view?usp=sharing)
+- [Video Demo](https://drive.google.com/file/d/1oFITKeeMRews4gCLoCoOhoP4ST_SkJxC/view?usp=sharing)
 
