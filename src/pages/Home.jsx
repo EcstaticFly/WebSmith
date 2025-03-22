@@ -4,7 +4,7 @@ import ElementsPanel from "../components/ElementsPanel";
 import Canvas from "../components/Canvas";
 import PropertiesPanel from "../components/PropertiesPanel";
 import { getDefaultProperties } from "../configs";
-import Footer from "../components/Footer"
+import Footer from "../components/Footer";
 
 const Home = () => {
   const [canvasElements, setCanvasElements] = useState([]);
@@ -18,6 +18,7 @@ const Home = () => {
     useState(false);
   const dragStartPosition = useRef({ x: 0, y: 0 });
   const elementSize = useRef({ width: 0, height: 0 });
+  const canvasRef = useRef(null);
 
   useEffect(() => {
     try {
@@ -87,22 +88,47 @@ const Home = () => {
       return;
     }
 
-    const rect = e.currentTarget.getBoundingClientRect();
-
-    const x = e.clientX - rect.left - elementSize.current.width / 2;
-    const y = e.clientY - rect.top - elementSize.current.height / 2;
-
-    // Constrain to canvas boundaries
-    const adjustedX = Math.max(
-      0,
-      Math.min(x, 1200 - elementSize.current.width)
-    );
-    const adjustedY = Math.max(
-      0,
-      Math.min(y, 800 - elementSize.current.height)
-    );
-
     try {
+      let adjustedX, adjustedY;
+
+      if (e.canvasX !== undefined && e.canvasY !== undefined) {
+        adjustedX = Math.max(
+          0,
+          Math.min(
+            e.canvasX - elementSize.current.width / 2,
+            1200 - elementSize.current.width
+          )
+        );
+
+        adjustedY = Math.max(
+          0,
+          Math.min(
+            e.canvasY - elementSize.current.height / 2,
+            800 - elementSize.current.height
+          )
+        );
+      } else {
+        // Fallback to original calculation if needed
+        const canvasContainer = e.currentTarget;
+        const canvasRect = canvasContainer.getBoundingClientRect();
+
+        // Calculate drop position taking scroll into account
+        const x =
+          e.clientX -
+          canvasRect.left +
+          canvasContainer.scrollLeft -
+          elementSize.current.width / 2;
+        const y =
+          e.clientY -
+          canvasRect.top +
+          canvasContainer.scrollTop -
+          elementSize.current.height / 2;
+
+        // Constrain to canvas boundaries
+        adjustedX = Math.max(0, Math.min(x, 1200 - elementSize.current.width));
+        adjustedY = Math.max(0, Math.min(y, 800 - elementSize.current.height));
+      }
+
       if (isDraggingExistingElement) {
         if (draggedItem.current && draggedItem.current.elementId) {
           const elementIdToMove = draggedItem.current.elementId;
@@ -169,6 +195,7 @@ const Home = () => {
           selectedElement={selectedElement}
           setSelectedElement={setSelectedElement}
           handleDragStart={handleDragStart}
+          canvasRef={canvasRef}
         />
         <div className="group grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-2">
           <ElementsPanel handleDragStart={handleDragStart} />
@@ -179,7 +206,7 @@ const Home = () => {
           />
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useEffect } from "react";
+import React, { useMemo, useEffect, useRef } from "react";
 import { availableIcons } from "../configs";
 
 const Canvas = ({
@@ -9,10 +9,11 @@ const Canvas = ({
   canvasElements,
   selectedElement,
   setSelectedElement,
+  canvasRef,
 }) => {
-  const canvasRef = useRef(null);
   const autoScrolling = useRef(false);
   const scrollDirection = useRef({ x: 0, y: 0 });
+  const canvasContainerRef = useRef(null);
 
   const canvasStyle = useMemo(
     () => ({
@@ -46,7 +47,7 @@ const Canvas = ({
         cancelAnimationFrame(animationFrameId);
       }
     };
-  }, [autoScrolling.current]);
+  }, [autoScrolling.current, canvasRef]);
 
   const handleCanvasClick = (e) => {
     // Check if we're clicking directly on the canvas or on its immediate child div
@@ -66,7 +67,7 @@ const Canvas = ({
     setSelectedElement(element);
   };
 
-  // Enhanced dragOver handler with auto-scrolling
+  // dragOver handler with auto-scrolling
   const enhancedDragOver = (e) => {
     e.preventDefault();
     e.dataTransfer.dropEffect = "move";
@@ -106,7 +107,33 @@ const Canvas = ({
 
   const enhancedDrop = (e) => {
     stopAutoScroll();
-    handleDrop(e);
+    e.preventDefault();
+
+    if (!canvasContainerRef.current) return;
+
+    // Get the canvas inner element for positioning
+    const canvasInnerElement = canvasContainerRef.current;
+    const canvasRect = canvasInnerElement.getBoundingClientRect();
+
+    // Calculate the scale factor between the fixed canvas size (1200x800) and its actual rendered size
+    const scaleX = 1200 / canvasRect.width;
+    const scaleY = 800 / canvasRect.height;
+
+    // Calculate drop position in canvas coordinates, accounting for scale
+    const canvasX = (e.clientX - canvasRect.left) * scaleX;
+    const canvasY = (e.clientY - canvasRect.top) * scaleY;
+
+    // Create a custom event that has the same properties as the original but with our calculated position
+    const customEvent = {
+      ...e,
+      canvasX,
+      canvasY,
+      canvasScale: { x: scaleX, y: scaleY },
+      preventDefault: e.preventDefault.bind(e),
+      currentTarget: e.currentTarget,
+    };
+
+    handleDrop(customEvent);
   };
 
   useEffect(() => {
@@ -258,12 +285,13 @@ const Canvas = ({
       onDrop={enhancedDrop}
       onDragOver={enhancedDragOver}
       onDragLeave={stopAutoScroll}
+      ref={canvasRef}
     >
       <div
-        ref={canvasRef}
-        className="relative  shadow-lg"
+        className="relative shadow-lg"
         onClick={handleCanvasClick}
         style={canvasStyle}
+        ref={canvasContainerRef}
       >
         <div
           className="relative"
