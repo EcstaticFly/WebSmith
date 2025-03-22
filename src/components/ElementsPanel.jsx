@@ -3,7 +3,7 @@ import { availableElements } from "../configs";
 
 const ElementsPanel = ({ handleDragStart }) => {
   return (
-    <div className="w-full lg:w-64 bg-white border-r border-gray-200 overflow-y-auto">
+    <div className="w-full lg:w-full bg-white border-r border-gray-200 overflow-y-auto">
       <div className="p-4">
         <h2 className="font-semibold text-gray-700 mb-4">Elements</h2>
         <div className="space-y-2">

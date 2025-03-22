@@ -152,6 +152,7 @@ const Navbar = ({
     ) {
       setCanvasElements([]);
       setSelectedElement(null);
+      localStorage.removeItem("canvasElements");
     }
   };
 

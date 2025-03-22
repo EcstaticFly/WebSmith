@@ -166,7 +166,7 @@ const Canvas = ({
   };
   return (
     <div
-      className="relative flex-1 bg-gray-100 overflow-hidden sm:overflow-auto"
+      className="relative flex-1 bg-gray-100 overflow-auto"
       onDrop={handleDrop}
       onDragOver={handleDragOver}
       onClick={handleCanvasClick}

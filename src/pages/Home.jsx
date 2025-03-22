@@ -139,7 +139,7 @@ const Home = () => {
   };
 
   return (
-    <div className="h-screen w-screen flex flex-col bg-gray-50">
+    <div className="h-screen flex flex-col bg-gray-50">
       <Navbar
         selectedTheme={selectedTheme}
         setSelectedTheme={setSelectedTheme}
@@ -147,7 +147,7 @@ const Home = () => {
         setCanvasElements={setCanvasElements}
         setSelectedElement={setSelectedElement}
       />
-      <div className="flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-4 p-4">
+      <div className="h-screen group flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-4 p-4">
         <Canvas
           handleDrop={handleDrop}
           handleDragOver={handleDragOver}
