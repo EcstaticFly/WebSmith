@@ -38,6 +38,9 @@ WebSmith is a web-based platform built using React and TailwindCSS that allows u
 ## Contact
 For any inquiries or collaboration, you can reach me at: [Suyash Pandey](mailto:suyash.2023ug1100@iiitranchi.ac.in).
 
+## Live Site
+- [WebSmith Live Site](https://websmith-webdesigns.vercel.app/)
+
 ## Source Code
 - [GitHub Link](https://github.com/EcstaticFly/WebSmith.git)
 - Description: Contains the full codebase for the WebSmith project, including both frontend and backend implementations.
