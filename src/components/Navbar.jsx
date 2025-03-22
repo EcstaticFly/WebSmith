@@ -29,7 +29,6 @@ const Navbar = ({
   };
 
   const exportWebsite = async () => {
-    // Helper function to convert image file to Base64
     const convertToBase64 = (filePath) => {
       return new Promise((resolve) => {
         const reader = new FileReader();
@@ -42,13 +41,11 @@ const Navbar = ({
       });
     };
 
-    // Convert theme to Base64 if it exists
     let themeBase64 = "";
     if (selectedTheme) {
       themeBase64 = await convertToBase64(selectedTheme);
     }
 
-    // Create a basic HTML structure
     const head = `<!DOCTYPE html>
     <html lang="en">
     <head>
@@ -59,19 +56,27 @@ const Navbar = ({
         body { 
           margin: 0; 
           padding: 0; 
-          width: 100vw;
-          height: 100vh;
-          background-image: url('${themeBase64}'); 
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: #f0f0f0;
+        }
+        .canvas-container {
+          width: 1200px;
+          height: 800px;
+          background-image: url('${themeBase64}');
           background-size: cover;
           background-position: center;
           position: relative;
+          overflow: hidden;
         }
         .exported-element { position: absolute; }
       </style>
     </head>
-    <body>`;
+    <body>
+      <div class="canvas-container">`;
 
-    const foot = `</body></html>`;
+    const foot = `</div></body></html>`;
     let content = "";
 
     canvasElements.forEach((element) => {
@@ -132,7 +137,6 @@ const Navbar = ({
 
     const html = head + content + foot;
 
-    // Create download link
     const blob = new Blob([html], { type: "text/html" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");

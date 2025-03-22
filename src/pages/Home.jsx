@@ -4,6 +4,7 @@ import ElementsPanel from "../components/ElementsPanel";
 import Canvas from "../components/Canvas";
 import PropertiesPanel from "../components/PropertiesPanel";
 import { getDefaultProperties } from "../configs";
+import Footer from "../components/Footer"
 
 const Home = () => {
   const [canvasElements, setCanvasElements] = useState([]);
@@ -72,6 +73,12 @@ const Home = () => {
     e.dataTransfer.effectAllowed = "move";
   };
 
+  const handleDragEnd = () => {
+    // Clean up drag state
+    draggedItem.current = null;
+    setIsDraggingExistingElement(false);
+  };
+
   const handleDrop = (e) => {
     e.preventDefault();
 
@@ -85,8 +92,15 @@ const Home = () => {
     const x = e.clientX - rect.left - elementSize.current.width / 2;
     const y = e.clientY - rect.top - elementSize.current.height / 2;
 
-    const adjustedX = Math.max(0, x);
-    const adjustedY = Math.max(0, y);
+    // Constrain to canvas boundaries
+    const adjustedX = Math.max(
+      0,
+      Math.min(x, 1200 - elementSize.current.width)
+    );
+    const adjustedY = Math.max(
+      0,
+      Math.min(y, 800 - elementSize.current.height)
+    );
 
     try {
       if (isDraggingExistingElement) {
@@ -128,8 +142,7 @@ const Home = () => {
       console.error("Error in handleDrop:", error);
     } finally {
       // Always reset drag state even if there was an error
-      draggedItem.current = null;
-      setIsDraggingExistingElement(false);
+      handleDragEnd();
     }
   };
 
@@ -166,6 +179,7 @@ const Home = () => {
           />
         </div>
       </div>
+      <Footer/>
     </div>
   );
 };
