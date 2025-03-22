@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "author": "Suyash Pandey",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
