@@ -147,7 +147,7 @@ const Home = () => {
         setCanvasElements={setCanvasElements}
         setSelectedElement={setSelectedElement}
       />
-      <div className="h-screen group flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-4 p-4">
+      <div className="lg:h-screen flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-4 p-4">
         <Canvas
           handleDrop={handleDrop}
           handleDragOver={handleDragOver}
@@ -157,9 +157,8 @@ const Home = () => {
           setSelectedElement={setSelectedElement}
           handleDragStart={handleDragStart}
         />
-        <div className="flex flex-col gap-2">
+        <div className="group grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-2">
           <ElementsPanel handleDragStart={handleDragStart} />
-          <div className="bg-gray-300 h-0.5 mb-3 mt-2"></div>
           <PropertiesPanel
             selectedElement={selectedElement}
             setCanvasElements={setCanvasElements}

@@ -43,7 +43,7 @@ const PropertiesPanel = ({
     setSelectedElement(null);
   };
   return (
-    <div className="w-full lg:w-72 bg-white border-l border-gray-200 overflow-y-auto">
+    <div className="w-full lg:w-72 bg-white border-1 border-t border-l rounded-lg border-gray-400 overflow-y-auto">
       <div className="p-4">
         <div className="flex justify-between items-center mb-4">
           <h2 className="font-semibold text-gray-700">Properties</h2>
